@@ -11,8 +11,7 @@ PKG_REL   := $(subst $(SPACE),.,$(strip $(ITEMS)))
 ZK_URL    ?= http://mirror.cogentco.com/pub/apache/zookeeper/stable/zookeeper-$(PKG_VER).tar.gz 
 SRC_TGZ    = $(notdir $(ZK_URL))
 CONTENTS  := opt/mesosphere/zookeeper/bin opt/mesosphere/zookeeper/lib \
-	opt/mesosphere/zookeeper/conf \
-	opt/mesosphere/zookeeper/zookeeper-$(PKG_VER).jar usr
+	opt/mesosphere/zookeeper/zookeeper-$(PKG_VER).jar usr etc
 
 TOP       := $(CURDIR)
 CACHE      = $(TOP)/tmp/cache
@@ -68,13 +67,15 @@ all: centos7
 .PHONY: centos7
 centos7: extract $(PKG)
 centos7: $(TOOR)/usr/lib/systemd/system/$(NAME).service
-centos7: $(TOOR)/opt/mesosphere/zookeeper/conf/zoo.cfg
+centos7: $(TOOR)/etc/zookeeper/conf/zoo.cfg
 	cd $(PKG) && fpm -C $(TOOR) \
-		--config-files opt/mesosphere/zookeeper/conf \
+		--config-files etc \
 		--after-install $(TOP)/postinst --iteration $(PKG_REL).centos7 \
 		$(FPM_OPTS) $(CONTENTS)
 
-$(TOOR)/opt/mesosphere/zookeeper/conf/zoo.cfg: zoo.cfg extract $(TOOR)
+$(TOOR)/etc/zookeeper/conf/zoo.cfg: zoo.cfg extract $(TOOR)
+	mkdir -p $(TOOR)/etc/zookeeper/conf
+	cp -rp $(TOOR)/opt/mesosphere/zookeeper/conf/* $(TOOR)/etc/zookeeper/conf/
 	cp zoo.cfg "$@"
 
 $(TOOR)/usr/lib/systemd/system/$(NAME).service: zookeeper.service
