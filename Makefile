@@ -48,16 +48,20 @@ $(TOOR):
 $(PKG):
 	mkdir -p $(PKG)
 
+.PHONY: fetch
 fetch: $(CACHE)
 	cd $(CACHE); wget -N $(ZK_URL)
 
+.PHONY: extract
 extract: fetch $(TOOR)
 	mkdir -p "$(TOOR)"/opt/mesosphere/zookeeper
 	cd "$(TOOR)"/opt/mesosphere/zookeeper && tar xzf "$(CACHE)/$(SRC_TGZ)" --strip=1
 
+.PHONY: clean
 clean:
 	rm -rf tmp
 
+.PHONY: distclean
 distclean: clean
 	rm -rf $(PKG)
 
