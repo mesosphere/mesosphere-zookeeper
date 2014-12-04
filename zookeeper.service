@@ -1,10 +1,11 @@
 [Unit]
 Description=Apache ZooKeeper
 After=network.target
-ConditionPathExists=/opt/mesosphere/zookeeper/conf/zoo.cfg
-ConditionPathExists=/opt/mesosphere/zookeeper/conf/log4j.properties
+ConditionPathExists=/etc/zookeeper/conf/zoo.cfg
+ConditionPathExists=/etc/zookeeper/conf/log4j.properties
 
 [Service]
+Environment="ZOOCFGDIR=/etc/zookeeper/conf"
 SyslogIdentifier=mesosphere-zookeeper
 WorkingDirectory=/opt/mesosphere/zookeeper
 ExecStart=/opt/mesosphere/zookeeper/bin/zkServer.sh start-foreground
