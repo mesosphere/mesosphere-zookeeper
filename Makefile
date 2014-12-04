@@ -70,7 +70,7 @@ all: centos7
 
 .PHONY: centos7
 centos7: extract $(PKG)
-centos7: $(TOOR)/usr/lib/systemd/system/$(NAME).service
+centos7: $(TOOR)/usr/lib/systemd/system/zookeeper.service
 centos7: $(TOOR)/etc/zookeeper/conf/zoo.cfg
 	cd $(PKG) && fpm -C $(TOOR) \
 		--config-files etc \
@@ -82,7 +82,7 @@ $(TOOR)/etc/zookeeper/conf/zoo.cfg: zoo.cfg extract $(TOOR)
 	cp -rp $(TOOR)/opt/mesosphere/zookeeper/conf/* $(TOOR)/etc/zookeeper/conf/
 	cp zoo.cfg "$@"
 
-$(TOOR)/usr/lib/systemd/system/$(NAME).service: zookeeper.service
+$(TOOR)/usr/lib/systemd/system/zookeeper.service: zookeeper.service
 	mkdir -p "$(dir $@)"
 	cp zookeeper.service "$@"
 

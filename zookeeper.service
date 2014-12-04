@@ -6,7 +6,7 @@ ConditionPathExists=/etc/zookeeper/conf/log4j.properties
 
 [Service]
 Environment="ZOOCFGDIR=/etc/zookeeper/conf"
-SyslogIdentifier=mesosphere-zookeeper
+SyslogIdentifier=zookeeper
 WorkingDirectory=/opt/mesosphere/zookeeper
 ExecStart=/opt/mesosphere/zookeeper/bin/zkServer.sh start-foreground
 Restart=on-failure
